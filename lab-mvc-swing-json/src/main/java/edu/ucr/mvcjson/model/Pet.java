@@ -25,6 +25,9 @@ public class Pet {
             throw new IllegalArgumentException("El número de teléfono del dueño debe tener exactamente 8 dígitos.");
         }
 
+
+
+        
         this.name = name;
         this.species = species;
         this.age = age;
