@@ -22,13 +22,13 @@ public class JsonPetRepository implements  PetRepository {
         this.file = new File(filePath);
         this.pets = new ArrayList<>();
 
-        File file = new File(filePath);
-
+        //crea el directorio si este no existe
         File parentDir = file.getParentFile();
         if (parentDir != null && !parentDir.exists()) {
             parentDir.mkdirs();
         }
 
+        //crea un archivo vacio si no existe archivo
         if(!file.exists()) {
             try {
                 file.createNewFile();
@@ -43,7 +43,6 @@ public class JsonPetRepository implements  PetRepository {
 
     @Override
     public void save(Pet pet) throws IOException {
-
         if(pet == null) {
             throw new IllegalArgumentException("Pet cannot be null");
         }
@@ -65,21 +64,29 @@ public class JsonPetRepository implements  PetRepository {
                return;
            }
            this.pets = mapper.readValue(file, new TypeReference<List<Pet>>() {});
+
+           if(this.pets == null) {
+               this.pets = new ArrayList<>();
+           }
         } catch (IOException e) {
-            throw new RuntimeException("Could not load Pet from file: " + filePath, e);
+            throw new RuntimeException("Error al cargar mascotas desde: " + filePath, e);
         }
     }
 
     @Override
-    public List<Pet> findByOwnerPhone(String name) {
-        return pets.stream().filter(p -> p.getOwnerPhone().equals(name)).toList();
+    public List<Pet> findByOwnerPhone(String phone) {
+        if (phone == null) {
+            return new ArrayList<>();
+        }
+
+        return pets.stream().filter(p -> p.getOwnerPhone().equals(phone)).toList();
     }
 
-    private void writeToFile() {
+    private void writeToFile() throws IOException {
         try {
             mapper.writerWithDefaultPrettyPrinter().writeValue(file, pets);
         } catch (IOException e) {
-            throw new RuntimeException("Could not write pets to file: " + filePath, e);
+            throw new IOException("Error al guardar mascotas en: " + filePath, e);
         }
     }
 }
