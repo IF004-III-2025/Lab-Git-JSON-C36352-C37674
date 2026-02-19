@@ -15,7 +15,11 @@ public class Pet {
             throw new IllegalArgumentException("La especie de la mascota no puede ser null o vacía.");
         }
 
-        if(age >= 0) {
+        if(!isValidSpecies(species)) {
+            throw new IllegalArgumentException("La especie de la mascota no es válida. Especies válidas: DOG, CAT, BIRD, RABBIT, OTHER.");
+        }
+
+        if(age < 0) {
             throw new IllegalArgumentException("La edad de la mascota no puede ser negativa.");
         }
 
@@ -65,4 +69,14 @@ public class Pet {
     public void setOwnerPhone(String ownerPhone) {
         this.ownerPhone = ownerPhone;
     }
+
+    private boolean isValidSpecies(String species) {
+       try{
+              Species.valueOf(species.toUpperCase());
+              return true;
+         } catch(IllegalArgumentException e) {
+              return false;
+       }
+    }
+
 }
