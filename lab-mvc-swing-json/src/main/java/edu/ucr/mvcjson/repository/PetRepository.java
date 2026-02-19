@@ -11,5 +11,4 @@ public interface PetRepository {
     List<Pet> findAll();
     void loadFromFile();
     List<Pet> findByOwnerPhone(String name);
-
 }
