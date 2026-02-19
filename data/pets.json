@@ -1,0 +1,11 @@
+[ {
+  "name" : "Orochimaru",
+  "species" : "OTHER",
+  "age" : 3,
+  "ownerPhone" : "09876543"
+}, {
+  "name" : "Buddy",
+  "species" : "DOG",
+  "age" : 3,
+  "ownerPhone" : "12345678"
+} ]

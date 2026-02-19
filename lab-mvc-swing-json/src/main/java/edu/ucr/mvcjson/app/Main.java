@@ -1,17 +1,25 @@
 package edu.ucr.mvcjson.app;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
-    static void main() {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        IO.println(String.format("Hello and welcome!"));
+import edu.ucr.mvcjson.controller.PetController;
+import edu.ucr.mvcjson.repository.JsonPetRepository;
+import edu.ucr.mvcjson.repository.PetRepository;
+import edu.ucr.mvcjson.view.PetFormView;
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            IO.println("i = " + i);
-        }
+import javax.swing.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        SwingUtilities.invokeLater(() -> {
+
+            String filePath = "data/pets.json";
+
+            PetRepository repository = new JsonPetRepository(filePath);
+            PetController controller = new PetController(repository);
+
+            PetFormView view = new PetFormView(controller);
+            view.setVisible(true);
+        });
     }
 }
