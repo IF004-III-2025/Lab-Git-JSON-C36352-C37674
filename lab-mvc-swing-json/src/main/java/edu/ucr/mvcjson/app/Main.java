@@ -1,18 +1,25 @@
 package edu.ucr.mvcjson.app;
 
-import edu.ucr.mvcjson.model.Pet;
+import edu.ucr.mvcjson.controller.PetController;
 import edu.ucr.mvcjson.repository.JsonPetRepository;
+import edu.ucr.mvcjson.repository.PetRepository;
+import edu.ucr.mvcjson.view.PetFormView;
 
-import java.io.IOException;
+import javax.swing.*;
 
 public class Main {
-    static void main() throws IOException {
-        String playerFilePath = "data/pets.json";
-        JsonPetRepository jsonPetRepository = new JsonPetRepository(playerFilePath);
 
-        Pet pet1 = new Pet("Buddy", "Dog", 5, "12345678");
+    public static void main(String[] args) {
 
-        jsonPetRepository.save(pet1);
+        SwingUtilities.invokeLater(() -> {
 
+            String filePath = "data/pets.json";
+
+            PetRepository repository = new JsonPetRepository(filePath);
+            PetController controller = new PetController(repository);
+
+            PetFormView view = new PetFormView(controller);
+            view.setVisible(true);
+        });
     }
 }

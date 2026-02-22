@@ -1,13 +1,17 @@
 package edu.ucr.mvcjson.model;
 
 public class Pet {
+
     private String name;
     private String species;
     private int age;
     private String ownerPhone;
 
+    // //Según lo investigado Jackson requiere el constructor vacío para la deserialización
+    public Pet() {
+    }
+
     public Pet(String name, String species, int age, String ownerPhone) {
-        //se usan los setters por algo llamado DRY (Don't Repeat Yourself), las validaciones quedan en los setters y no se tienen q repetir en el constructor
         setName(name);
         setSpecies(species);
         setAge(age);
@@ -20,7 +24,7 @@ public class Pet {
 
     public void setName(String name) {
         if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("El nombre de la mascota no puede ser null o vacío.");
+            throw new IllegalArgumentException("The pet name cannot be null or empty.");
         }
         this.name = name.trim();
     }
@@ -31,13 +35,13 @@ public class Pet {
 
     public void setSpecies(String species) {
         if (species == null || species.trim().isEmpty()) {
-            throw new IllegalArgumentException("La especie de la mascota no puede ser null o vacía.");
+            throw new IllegalArgumentException("The pet species cannot be null or empty.");
         }
 
         String normalizedSpecies = species.trim().toUpperCase();
         if (!isValidSpecies(normalizedSpecies)) {
             throw new IllegalArgumentException(
-                    "La especie '" + species + "' no es válida. Especies válidas: DOG, CAT, BIRD, RABBIT, OTHER."
+                    "Invalid species '" + species + "'. Valid species: DOG, CAT, BIRD, RABBIT, OTHER."
             );
         }
 
@@ -50,7 +54,7 @@ public class Pet {
 
     public void setAge(int age) {
         if (age < 0) {
-            throw new IllegalArgumentException("La edad de la mascota no puede ser negativa.");
+            throw new IllegalArgumentException("The pet age cannot be negative.");
         }
         this.age = age;
     }
@@ -61,17 +65,17 @@ public class Pet {
 
     public void setOwnerPhone(String ownerPhone) {
         if (ownerPhone == null || ownerPhone.trim().isEmpty()) {
-            throw new IllegalArgumentException("El número de teléfono del dueño no puede ser null o vacío.");
+            throw new IllegalArgumentException("The owner phone cannot be null or empty.");
         }
 
         String cleanPhone = ownerPhone.trim();
 
         if (cleanPhone.length() != 8) {
-            throw new IllegalArgumentException("El número de teléfono del dueño debe tener exactamente 8 dígitos.");
+            throw new IllegalArgumentException("The owner phone must have exactly 8 digits.");
         }
 
         if (!cleanPhone.matches("\\d{8}")) {
-            throw new IllegalArgumentException("El número de teléfono debe contener solo dígitos.");
+            throw new IllegalArgumentException("The owner phone must contain only digits.");
         }
 
         this.ownerPhone = cleanPhone;
