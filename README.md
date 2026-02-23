@@ -2,7 +2,54 @@
 
 ### Componentes Implementados
 
-///////////////////////////////////Eduardo///////////////////////////
+## Capa Model
+
+La capa `model` define las entidades y enumeraciones fundamentales de la aplicación. En este caso:
+
+- `Pet`: Clase que representa a una mascota. Contiene atributos como:
+    - `name` (String)
+    - `species` (enum o String)
+    - `age` (int)
+    - `ownerPhone` (String)
+- `Species` (opcional): Enum que representa las posibles especies disponibles en la aplicación (por ejemplo, PERRO, GATO, OTRO). Su uso permite validación robusta y minimiza errores de entrada.
+
+**Característica principal:**  
+Todas las reglas de negocio relacionadas con los datos de las mascotas (validaciones, restricciones, etc.) deben colocarse preferentemente en el controller o en la vista, procurando que las entidades sean simples (POJO).
+
+## Capa Repository
+
+La capa `repository` se encarga de la persistencia y recuperación de datos de las mascotas utilizando archivos JSON.
+
+- **Interfaz `PetRepository`:**
+    - Define los métodos para persistir, obtener y consultar mascotas (ejemplo: `save(Pet pet)`, `findAll()`).
+    - Permite desacoplar la lógica de la aplicación del mecanismo de almacenamiento.
+
+- **Implementación principal:**  
+  `JsonPetRepository`
+    - Crea, si no existe, la carpeta `data/` y el archivo `data/pets.json`.
+    - Se encarga de guardar y cargar los datos en formato JSON utilizando la biblioteca Jackson (configurada por Maven).
+    - Mantiene la consistencia entre la memoria y el archivo.
+    - Retorna listas inmutables para evitar problemas de concurrencia y asegurar el principio de inmutabilidad en la consulta de datos.
+
+**Principios clave:**
+- El Controller interactúa solo con `PetRepository`, nunca directamente con archivos ni con clases concretas de almacenamiento.
+- La implementación concreta utilizada (en este caso JSON) puede intercambiarse sin afectar el resto del sistema.
+
+## Capa Controller
+
+La capa `controller` gestiona la lógica de la aplicación y actúa como intermediario entre la interfaz gráfica (View) y la capa de persistencia (Repository).
+
+- **Clase principal:**  
+  `PetController`
+    - Maneja la lógica de validación de los datos antes de llamar al repository para guardar una mascota.
+    - Expone métodos para registrar y listar mascotas.
+    - Recibe, por constructor, la interfaz del Repository; de esta forma, se asegura la inyección de dependencias y el desacoplamiento.
+
+**Responsabilidad esencial:**
+- La vista nunca debe acceder directamente al Repository; toda la lógica y validación pasan por el Controller.
+- El Controller expone únicamente lo necesario para que la vista muestre información o responda a eventos del usuario.
+
+_Estas tres capas, junto con la vista, conforman la arquitectura en capas exigida: cada componente tiene responsabilidades claras y delimitadas, facilitando el mantenimiento y la escalabilidad del proyecto._
 
 ## Vistas Swing (Capa View)
 
